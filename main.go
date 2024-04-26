@@ -2,29 +2,28 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
-	"dayone/config"
+	"dayone/api/v1"
+	"dayone/application"
+	"dayone/application/environments"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	config := config.LoadApplicationConfig()
+	app := application.Start()
 
-	router := gin.Default()
-
-	if config.Env == "development" {
-		gin.SetMode(gin.DebugMode)
-	} else {
-		gin.SetMode(gin.ReleaseMode)
+	switch app.Env {
+	case "production":
+		environments.Production(app)
+	default:
+		environments.Development(app)
 	}
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "pong"})
-	})
+	engine := gin.Default()
 
-	serverPort := fmt.Sprintf(":%s", config.Port)
+	v1.Routes(engine)
 
-	router.Run(serverPort)
+	serverUrl := fmt.Sprintf("%s:%s", app.Host, app.Port)
+	engine.Run(serverUrl)
 }
