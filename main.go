@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"dayone/api/v1"
+	v1 "dayone/api/v1"
 	"dayone/application"
 	"dayone/application/environments"
 
