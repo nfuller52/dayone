@@ -2,7 +2,9 @@ package application
 
 import (
 	"dayone/application/database"
-	"dayone/util"
+	"dayone/cli"
+	"dayone/src/util"
+	"os"
 )
 
 type ApplicationConfig struct {
@@ -24,7 +26,17 @@ func Start() *ApplicationConfig {
 
 	database.ConnectToDB(config.DatabaseURL)
 
+	if len(os.Args) > 1 {
+		cli.RunCLI(os.Args)
+
+		os.Exit(0)
+	}
+
 	return config
+}
+
+func (config *ApplicationConfig) ServerUrl() string {
+	return config.Host + ":" + config.Port
 }
 
 func (config *ApplicationConfig) IsDev() bool {

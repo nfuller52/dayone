@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
-
-	v1 "dayone/api/v1"
 	"dayone/application"
 	"dayone/application/environments"
+	v1 "dayone/src/api/v1"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +22,5 @@ func main() {
 
 	v1.Routes(engine)
 
-	serverUrl := fmt.Sprintf("%s:%s", app.Host, app.Port)
-	engine.Run(serverUrl)
+	engine.Run(app.ServerUrl())
 }

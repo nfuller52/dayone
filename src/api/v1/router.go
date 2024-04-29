@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"net/http"
+	"dayone/src/api/v1/auth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +9,5 @@ import (
 func Routes(engine *gin.Engine) {
 	router := engine.Group("/api/v1")
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "pong"})
-	})
+	auth.AuthRoutes(router)
 }
